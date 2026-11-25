@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MediXplain — AI that shows its work</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='5' fill='%23ffb547'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="vendor/lenis.css">
+<link rel="stylesheet" href="css/app.css">
+<script defer src="vendor/gsap.min.js"></script>
+<script defer src="vendor/ScrollTrigger.min.js"></script>
+<script defer src="vendor/SplitText.min.js"></script>
+<script defer src="vendor/ScrambleTextPlugin.min.js"></script>
+<script defer src="vendor/lenis.min.js"></script>
+<script type="module" src="js/app.js"></script>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="nav__logo" href="#hero"><span class="nav__dot"></span>MediXplain <em>v2</em></a>
+  <nav class="nav__links" aria-label="Chapters">
+    <a href="#tumour" data-ch="tumour"><span>01</span> Tumour</a>
+    <a href="#xray" data-ch="xray"><span>02</span> X-ray</a>
+    <a href="#symptoms" data-ch="symptoms"><span>03</span> Symptoms</a>
+    <a href="#trust" data-ch="trust"><span>04</span> Trust Lab</a>
+  </nav>
+  <div class="nav__progress"><i id="progress"></i></div>
+</header>
+
+<main id="main">
+
+<!-- HERO -------------------------------------------------------------- -->
+<section id="hero" class="hero" aria-label="Introduction">
+  <canvas id="hero-canvas" class="hero__canvas" aria-hidden="true"></canvas>
+  <div class="hero__scanline" aria-hidden="true"></div>
+  <div class="hero__copy">
+    <p class="kicker">Explainable AI · IA3 · 23DC2022</p>
+    <h1 class="hero__title" id="hero-title">AI that<br><em>shows its work.</em></h1>
+    <p class="hero__lede">Three medical models. Fifteen ways to see inside them. One lab that checks whether the explanations tell the truth.</p>
+    <div class="hero__stats">
+      <div><b class="mono" data-count="0.996" data-dec="3">0.996</b><span>tumour AUC</span></div>
+      <div><b class="mono" data-count="0.980" data-dec="3">0.980</b><span>X-ray AUC</span></div>
+      <div><b class="mono" data-count="95.8" data-dec="1" data-suf="%">95.8%</b><span>symptom accuracy</span></div>
+    </div>
+  </div>
+  <div class="hero__legend mono" aria-hidden="true">
+    <span id="hero-stage">01 · signal</span>
+    <span class="hero__legend-bar"><i class="neg"></i><i class="pos"></i></span>
+    <span>cool = against · warm = for</span>
+  </div>
+  <a class="hero__cue mono" href="#problem">scroll<span></span></a>
+</section>
+
+<!-- PROBLEM ----------------------------------------------------------- -->
+<section id="problem" class="problem" aria-label="The problem">
+  <p class="kicker">The problem</p>
+  <p class="problem__text" id="problem-text">A model looked at a child’s chest X-ray and said <em>pneumonia</em>. It was 99.99% sure. Nobody in the room could say <em>why</em> — and a doctor cannot sign off on a reason they cannot see.</p>
+</section>
+
+<!-- MODELS ------------------------------------------------------------ -->
+<section id="models" class="models" aria-label="The three models">
+  <div class="wrap">
+    <p class="kicker">One app · three AI helpers</p>
+    <h2 class="h2">Every answer arrives <em>with its reasons.</em></h2>
+    <div class="models__grid">
+      <a class="mcard" href="#tumour">
+        <span class="mcard__no mono">01 · tabular</span>
+        <h3>Tumour biopsy</h3>
+        <p>30 measurements of cell nuclei → malignant or benign.</p>
+        <b class="mcard__stat mono" data-count="0.996" data-dec="3">0.996</b><span class="mcard__unit">ROC-AUC · XGBoost</span>
+      </a>
+      <a class="mcard" href="#xray">
+        <span class="mcard__no mono">02 · image</span>
+        <h3>Chest X-ray</h3>
+        <p>A 64×64 paediatric X-ray → pneumonia or normal.</p>
+        <b class="mcard__stat mono" data-count="0.980" data-dec="3">0.980</b><span class="mcard__unit">ROC-AUC · CNN</span>
+      </a>
+      <a class="mcard" href="#symptoms">
+        <span class="mcard__no mono">03 · text</span>
+        <h3>Symptoms</h3>
+        <p>A sentence in the patient’s words → one of 22 diagnoses.</p>
+        <b class="mcard__stat mono" data-count="95.8" data-dec="1" data-suf="%">95.8%</b><span class="mcard__unit">accuracy · TF-IDF + LR</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- TUMOUR ------------------------------------------------------------ -->
+<section id="tumour" class="lab" aria-label="Tumour lab">
+  <div class="wrap">
+    <header class="lab__head">
+      <p class="kicker"><span class="mono">01</span> Tumour lab · tabular</p>
+      <h2 class="h2">Which measurements <em>tipped the call?</em></h2>
+      <p class="lab__lede">Pick a patient. Bars show how each measurement pushed the prediction: <span class="t-pos">warm toward malignant</span>, <span class="t-neg">cool toward benign</span>. Drag a slider and the model answers again, live.</p>
+    </header>
+    <div class="lab__grid">
+      <aside class="panel">
+        <label class="field">
+          <span class="field__label mono">Patient</span>
+          <div class="stepper">
+            <button class="btn btn--icon" id="tum-prev" aria-label="Previous patient">‹</button>
+            <select id="tum-patient" class="select" aria-label="Test patient"></select>
+            <button class="btn btn--icon" id="tum-next" aria-label="Next patient">›</button>
+          </div>
+        </label>
+        <div class="gauge" id="tum-gauge"></div>
+        <p class="mono faint" id="tum-glass"></p>
+        <div class="sliders" id="tum-sliders" aria-label="What-if sliders"></div>
+        <button class="btn btn--ghost" id="tum-reset">Reset to the real patient</button>
+      </aside>
+      <div class="panel panel--wide">
+        <div class="panel__bar">
+          <h3 class="h3">SHAP waterfall <span class="faint">· each measurement’s push, in log-odds</span></h3>
+        </div>
+        <div id="tum-waterfall" class="chart" aria-live="polite"></div>
+        <div class="split">
+          <div>
+            <h3 class="h3">What would flip it? <span class="faint">· counterfactual</span></h3>
+            <div id="tum-cf" class="cf"></div>
+          </div>
+          <div>
+            <h3 class="h3">In plain English</h3>
+            <div id="tum-card" class="card-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- XRAY -------------------------------------------------------------- -->
+<section id="xray" class="lab" aria-label="Chest X-ray lab">
+  <div class="wrap">
+    <header class="lab__head">
+      <p class="kicker"><span class="mono">02</span> X-ray lab · image</p>
+      <h2 class="h2">Where did the AI <em>look?</em></h2>
+      <p class="lab__lede">Six methods, one X-ray. Warm areas pushed the answer toward the explained class. Then the honesty test: does the map change when the AI’s learning is scrambled?</p>
+    </header>
+    <div class="thumbs" id="xr-thumbs" role="listbox" aria-label="Test X-rays"></div>
+    <div class="lab__grid">
+      <div class="panel panel--wide xr-stage">
+        <div class="seg" id="xr-methods" role="tablist" aria-label="Explanation method"></div>
+        <div class="xr-view">
+          <canvas id="xr-canvas" width="640" height="640" aria-label="X-ray with attribution map"></canvas>
+          <div class="xr-develop mono" id="xr-loading">developing…</div>
+          <div class="xr-compare" id="xr-compare" hidden>
+            <canvas id="xr-random" width="640" height="640" aria-label="Map from a model with random weights"></canvas>
+            <input type="range" min="0" max="100" value="50" id="xr-split" aria-label="Compare trained and scrambled model">
+            <span class="xr-tag xr-tag--l mono">trained AI</span><span class="xr-tag xr-tag--r mono">scrambled AI</span>
+          </div>
+        </div>
+        <p class="mono faint" id="xr-plain"></p>
+        <div class="xr-tools">
+          <button class="btn btn--ghost" id="xr-sanity" aria-pressed="false">Run the honesty test</button>
+          <label class="btn btn--ghost" for="xr-upload">Upload your own X-ray</label>
+          <input type="file" id="xr-upload" accept="image/*" hidden>
+          <span class="mono" id="xr-sanity-out" aria-live="polite"></span>
+        </div>
+      </div>
+      <aside class="panel">
+        <div class="gauge" id="xr-gauge"></div>
+        <h3 class="h3">Deletion test <span class="faint">· remove top pixels first</span></h3>
+        <div id="xr-deletion" class="chart chart--sm"></div>
+        <p class="faint small">A faithful map makes the line fall fast. Dashed = random pixels.</p>
+        <div id="xr-card" class="card-text"></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- SYMPTOMS ---------------------------------------------------------- -->
+<section id="symptoms" class="lab" aria-label="Symptoms lab">
+  <div class="wrap">
+    <header class="lab__head">
+      <p class="kicker"><span class="mono">03</span> Symptoms lab · text</p>
+      <h2 class="h2">Which words <em>made the diagnosis?</em></h2>
+      <p class="lab__lede">Type how a patient feels. Every word lights up by how much it pushed the answer — and you can ask why one illness and not another.</p>
+    </header>
+    <div class="lab__grid">
+      <div class="panel panel--wide">
+        <div class="chips" id="sym-examples"></div>
+        <textarea id="sym-text" class="textarea" rows="3" aria-label="Symptom description"></textarea>
+        <div class="seg" id="sym-methods" role="tablist" aria-label="Word scoring method"></div>
+        <div class="sym-out" id="sym-highlight" aria-live="polite"></div>
+        <div class="split">
+          <div>
+            <h3 class="h3">Top words <span class="faint" id="sym-method-name"></span></h3>
+            <div id="sym-words" class="chart"></div>
+          </div>
+          <div>
+            <h3 class="h3">Why <span id="sym-a"></span>, not <span id="sym-b"></span>?</h3>
+            <div id="sym-contrast" class="chart"></div>
+          </div>
+        </div>
+      </div>
+      <aside class="panel">
+        <h3 class="h3">Most likely</h3>
+        <div id="sym-top" class="chart"></div>
+        <div id="sym-card" class="card-text"></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST ------------------------------------------------------------- -->
+<section id="trust" class="trust" aria-label="Trust Lab">
+  <div class="wrap">
+    <header class="lab__head">
+      <p class="kicker"><span class="mono">04</span> Trust Lab</p>
+      <h2 class="h2">An explanation is a claim. <em>So we tested it.</em></h2>
+    </header>
+    <div class="findings" id="findings">
+      <article class="finding"><b class="finding__big mono" data-count="46" data-suf="%">46%</b><h3>Some heatmaps can fool you</h3><p>SmoothGrad’s map stays 46% the same after we scramble the AI. Occlusion drops to 0%.</p></article>
+      <article class="finding"><b class="finding__big">Blur</b><h3>The X-ray AI took a shortcut</h3><p>A fully blurred X-ray is called pneumonia. Part of what it learned is “hazy means sick”.</p></article>
+      <article class="finding"><b class="finding__big mono" data-count="0.90" data-dec="2">0.90</b><h3>LIME is not steady</h3><p>Its ranking only agrees 0.90 between runs. TreeSHAP gives the same answer every time.</p></article>
+      <article class="finding"><b class="finding__big mono">0.997</b><h3>Simple was enough</h3><p>For tumours, a readable logistic regression matches XGBoost (0.996).</p></article>
+    </div>
+    <div class="trust__grid">
+      <div class="panel"><h3 class="h3">Faithfulness · tumour <span class="faint">drop when top-5 removed ↑</span></h3><div id="tr-tab" class="chart"></div></div>
+      <div class="panel"><h3 class="h3">Faithfulness · X-ray <span class="faint">deletion AUC ↓</span></h3><div id="tr-img" class="chart"></div></div>
+      <div class="panel"><h3 class="h3">Faithfulness · text <span class="faint">comprehensiveness ↑</span></h3><div id="tr-txt" class="chart"></div></div>
+      <div class="panel"><h3 class="h3">Sanity check <span class="faint">similarity to scrambled AI ↓</span></h3><div id="tr-sanity" class="chart"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTRO ------------------------------------------------------------- -->
+<section id="outro" class="outro" aria-label="Takeaway">
+  <p class="kicker">The takeaway</p>
+  <p class="outro__line" id="outro-line">Check the explanation, <em>just like the AI.</em></p>
+  <div class="marquee" aria-hidden="true"><div class="marquee__track mono">Python · Starlette · PyTorch · XGBoost · scikit-learn · SHAP · LIME · Grad-CAM · Integrated Gradients · SmoothGrad · Occlusion · GSAP · Lenis · Python · Starlette · PyTorch · XGBoost · scikit-learn · SHAP · LIME · Grad-CAM · Integrated Gradients · SmoothGrad · Occlusion · GSAP · Lenis ·</div></div>
+  <p class="faint small mono">MediXplain v2 · Karunya Institute of Technology and Sciences · data: Breast Cancer Wisconsin, PneumoniaMNIST, symptom_to_diagnosis</p>
+</section>
+
+</main>
+</body>
+</html>

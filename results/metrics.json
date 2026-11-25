@@ -1,0 +1,203 @@
+{
+  "tabular": {
+    "metrics": {
+      "xgboost": {
+        "accuracy": 0.9790209790209791,
+        "f1": 0.970873786407767,
+        "roc_auc": 0.9955974842767294
+      },
+      "logistic_regression": {
+        "accuracy": 0.9790209790209791,
+        "f1": 0.970873786407767,
+        "roc_auc": 0.9972746331236897
+      }
+    },
+    "n_train": 426,
+    "n_test": 143,
+    "counterfactual": {
+      "flip_rate": 1.0,
+      "mean_features_changed": 4.875,
+      "mean_l1_std_distance": 3.6694951637407565,
+      "example": {
+        "start_prob": 0.9978808760643005,
+        "end_prob": 0.40921780467033386,
+        "flipped": true,
+        "target": "benign",
+        "changes": [
+          [
+            "worst_perimeter",
+            151.7,
+            100.22844937724557,
+            -1.5
+          ],
+          [
+            "worst_area",
+            1332.0,
+            597.3739316495279,
+            -1.25
+          ],
+          [
+            "worst_texture",
+            29.94,
+            23.8872154556205,
+            -1.0000000000000002
+          ],
+          [
+            "worst_concavity",
+            0.3639,
+            0.15571290711943744,
+            -1.0
+          ],
+          [
+            "worst_concave_points",
+            0.1767,
+            0.1106338899440071,
+            -1.0
+          ],
+          [
+            "mean_smoothness",
+            0.0974,
+            0.09037,
+            -0.48912200470485384
+          ]
+        ],
+        "l1_std_distance": 6.239122004704854
+      }
+    },
+    "agreement": {
+      "SHAP vs LIME": {
+        "top5_overlap": 0.68,
+        "spearman": 0.7702113459399331
+      },
+      "SHAP vs glass-box": {
+        "top5_overlap": 0.445,
+        "spearman": 0.5024805339265851
+      },
+      "LIME vs glass-box": {
+        "top5_overlap": 0.425,
+        "spearman": 0.4625583982202447
+      }
+    },
+    "stability": {
+      "LIME seed-to-seed spearman": 0.9008231368186873,
+      "SHAP seed-to-seed spearman": 1.0,
+      "SHAP under 1% input noise": 1.0,
+      "LIME under 1% input noise": 0.9364627363737485
+    },
+    "faithfulness_top5_drop": {
+      "SHAP": 0.24600458145141602,
+      "LIME": 0.2339516431093216,
+      "Glass-box coef": 0.09761326014995575,
+      "Random": 0.023673905059695244
+    }
+  },
+  "image": {
+    "metrics": {
+      "accuracy": 0.9310897435897436,
+      "f1": 0.947239263803681,
+      "roc_auc": 0.9804843304843305,
+      "val_auc": 0.9973340950204703
+    },
+    "deletion_auc": {
+      "Grad-CAM": 0.7468093266089757,
+      "Integrated Gradients": 0.7745669449369113,
+      "SmoothGrad": 0.7912203888098399,
+      "Vanilla gradient": 0.8036685516436894,
+      "Occlusion": 0.656885985036691,
+      "Random": 0.8318489183982213
+    },
+    "sanity_spearman": {
+      "Grad-CAM": 0.3448026547579003,
+      "Integrated Gradients": 0.16319967084178683,
+      "SmoothGrad": 0.4548258936025295,
+      "Vanilla gradient": 0.10138069854228722,
+      "Occlusion": 0.005019615907402202
+    },
+    "method_agreement_example": {
+      "methods": [
+        "Grad-CAM",
+        "Integrated Gradients",
+        "SmoothGrad",
+        "Vanilla gradient",
+        "Occlusion",
+        "LIME (superpixels)"
+      ],
+      "matrix": [
+        [
+          1.0,
+          0.097,
+          0.436,
+          0.053,
+          0.567,
+          0.437
+        ],
+        [
+          0.097,
+          1.0,
+          0.377,
+          0.452,
+          0.279,
+          0.096
+        ],
+        [
+          0.436,
+          0.377,
+          1.0,
+          0.264,
+          0.586,
+          0.258
+        ],
+        [
+          0.053,
+          0.452,
+          0.264,
+          1.0,
+          0.065,
+          0.061
+        ],
+        [
+          0.567,
+          0.279,
+          0.586,
+          0.065,
+          1.0,
+          0.408
+        ],
+        [
+          0.437,
+          0.096,
+          0.258,
+          0.061,
+          0.408,
+          1.0
+        ]
+      ]
+    }
+  },
+  "text": {
+    "metrics": {
+      "accuracy": 0.9575471698113207,
+      "macro_f1": 0.9564640038324246
+    },
+    "n_classes": 22,
+    "n_train": 853,
+    "n_test": 212,
+    "agreement_top3": {
+      "SHAP vs LIME": 0.8333333333333333,
+      "SHAP vs Occlusion": 0.7666666666666666,
+      "SHAP vs Linear contribution": 0.9666666666666668,
+      "LIME vs Occlusion": 0.85,
+      "LIME vs Linear contribution": 0.8333333333333333,
+      "Occlusion vs Linear contribution": 0.7583333333333333
+    },
+    "comprehensiveness_top3": {
+      "SHAP": 0.4327214213011891,
+      "LIME": 0.45433857410571477,
+      "Occlusion": 0.4371385844990561,
+      "Linear contribution": 0.42646024033924823,
+      "Random": 0.08445519029330686
+    },
+    "lime_seed_stability": 0.9710460772104608
+  },
+  "runtime_seconds": 123.6
+}

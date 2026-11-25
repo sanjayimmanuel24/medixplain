@@ -1,0 +1,14 @@
+torch>=2.2
+numpy>=1.26
+pandas>=2.0
+scipy>=1.11
+scikit-learn>=1.4
+scikit-image>=0.22
+xgboost>=2.0
+shap>=0.45
+lime>=0.2.0.1
+medmnist>=3.0
+matplotlib>=3.8
+streamlit>=1.40
+pillow>=10.0
+joblib>=1.3

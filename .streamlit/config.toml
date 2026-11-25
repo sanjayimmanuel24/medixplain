@@ -1,0 +1,6 @@
+[browser]
+gatherUsageStats = false
+
+[server]
+# 8501 is Streamlit's default and is often taken by another project's app
+port = 8502

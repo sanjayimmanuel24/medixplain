@@ -1,0 +1,13 @@
+{
+  "axioms": {
+    "shap_additivity_max_abs_error": 4.76837158203125e-06,
+    "shap_n": 143,
+    "ig_completeness_mean_rel_error": 0.003639036091044545,
+    "ig_n": 20
+  },
+  "cards": {
+    "tabular": "**Prediction:** malignant (99.8%, the model is very confident). The average case starts at a 40% malignancy risk.\n\n**Pushing toward malignant:** mean concave points = 0.112 (+1.20 log-odds), worst concave points = 0.177 (+1.04 log-odds), worst perimeter = 152 (+0.88 log-odds).\n\n**Pushing toward benign:** worst smoothness = 0.104 (-0.57), compactness error = 0.083 (-0.37).\n\n**What would change the call:** the prediction becomes *benign* if worst perimeter 152 \u2192 100, worst area 1.33e+03 \u2192 597, worst texture 29.9 \u2192 23.9 (and smaller changes).\n\n_Decision support only. A pathologist makes the diagnosis._",
+    "image": "**Prediction:** pneumonia (100%, very confident).\n\n**Where the model looked:** mostly the middle central region. 30% of the image is strongly highlighted, so the evidence is diffuse.\n\n_Heatmaps show what drove the model, not where the disease is. A radiologist must review._",
+    "text": "**Most likely:** pneumonia (96%, very confident).\n\n**Also considered:** gastroesophageal reflux disease (1%), drug reaction (1%).\n\n**Words that pointed to it:** \u201cheart\u201d, \u201cracing\u201d, \u201cbrown\u201d, \u201cphlegm\u201d.\n\n**Words that argued against it:** \u201cfeel\u201d.\n\n_Triage aid only. It matches phrasing patterns and does not examine the patient._"
+  }
+}
